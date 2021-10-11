@@ -51,7 +51,7 @@ export class MailgunController {
 
             const isPublished: Boolean = await this.publisher.publish(eventDto);
             const isSaved: Boolean = await this.store.set(eventRawData);
-            return MessageUtil.success({ isVerified, isPublished, isSaved });
+            return MessageUtil.success({ isVerified, isPublished });
 
         } catch (error) {
             return MessageUtil.error(406, error.message);
