@@ -8,5 +8,26 @@ saves the raw event in dynamodb.
 - REST API with typescript
 - MongoDB Atlas data storage
 - Multi-environment management under Serverless
-- Mocha unit tests and lambda-tester interface test
+- jest unit test with aws-sdk-mock for mocking AWS.
 - AWS lambda function log view
+
+## Resources it will create?
+
+- Dynamodb table to store mailgun raw data
+- SNS notification topic
+- SSM paramters
+- lambda function
+- Api gateway
+
+## How to run?
+
+- npm install -g serverless
+- serverless deploy -s <stage>
+
+## Run unit test?
+
+- npm run test
+
+### Output
+
+![A test image](image.png)
