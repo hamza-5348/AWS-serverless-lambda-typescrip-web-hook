@@ -9,8 +9,9 @@ phases:
       - npm install
     build:
       commands:
+        - echo Entered the build phase...
         - serverless deploy
-
+        - echo deployment completed
 cache:
   paths:
     - node_modules
