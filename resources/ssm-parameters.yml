@@ -1,0 +1,29 @@
+Resources:
+  SSMParameterSnsTopic:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: ${self:custom.ssmPathForSnsArn}
+      Type: String
+      Value:
+        {
+          "Fn::Join":
+            [
+              "",
+              [
+                "arn:aws:sns:${self:provider.region}:",
+                { "Ref": "AWS::AccountId" },
+                ":${self:custom.snsTopicName}",
+              ],
+            ],
+        }
+      Tags:
+        Environment: ${self:custom.stage}
+
+  MailgunSigningKey:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: ${self:custom.ssmPathForMailgunSigningKey}
+      Type: String
+      Value: "Enter your signing key"
+      Tags:
+        Environment: ${self:custom.stage}

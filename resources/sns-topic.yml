@@ -1,0 +1,6 @@
+Resources:
+  MyTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: "Mailgun Events"
+      TopicName: ${self:custom.snsTopicName}

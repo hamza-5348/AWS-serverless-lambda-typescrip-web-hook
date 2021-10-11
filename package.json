@@ -1,0 +1,54 @@
+{
+  "name": "aws-node-typescript-mailgun-web-hook",
+  "version": "1.0.0",
+  "description": "This is simple mailgun web hook example for AWS Lambda using TypeScript .",
+  "main": "index.js",
+  "scripts": {
+    "lint": "tslint -p tsconfig.json -c tslint.json",
+    "local": "serverless offline",
+    "deploy": "serverless deploy",
+    "test": "jest --config=jest.config.test.js",
+    "compile": "tsc"
+  },
+  "pre-commit": [
+    "lint"
+  ],
+  "dependencies": {
+    "aws-sdk": "^2.1004.0",
+    "aws-sdk-mock": "^5.4.0",
+    "crypto": "^1.0.1",
+    "dotenv": "^8.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
+    "@babel/preset-typescript": "^7.15.0",
+    "@types/aws-lambda": "^8.10.51",
+    "@types/dotenv-safe": "^8.1.0",
+    "@types/jest": "^27.0.2",
+    "aws-sdk-client-mock": "^0.5.5",
+    "babel-jest": "^27.2.5",
+    "cross-env": "^7.0.2",
+    "istanbul": "^0.4.5",
+    "jest": "^27.2.5",
+    "serverless": "^2.61.0",
+    "serverless-offline": "^5.12.1",
+    "serverless-plugin-typescript": "^2.1.0",
+    "ts-node": "^8.9.1",
+    "tslint": "^6.1.2",
+    "tslint-config-airbnb": "^5.11.2",
+    "typescript": "^4.4.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Q-Angelo/aws-node-typescript-rest-api.git"
+  },
+  "keywords": [
+    "Nodejs",
+    "TypeScript",
+    "ServerLess",
+    "Mailgun",
+    "AWS Lambda"
+  ],
+  "author": "Hamza Hassan"
+}

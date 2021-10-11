@@ -1,0 +1,97 @@
+app: mail-gun-web-hook
+service: mail-gun-web-hook
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  # Set the table name here so we can use it while testing locally
+  tableName: ${self:custom.stage}-mailgun-events
+  snsTopicName: ${self:custom.stage}-mailgun-events
+  # set the ssm parameter name so that we can use it fetch arm from ssm
+  ssmPathForSnsArn: /${self:custom.stage}/arn/${self:custom.snsTopicName}
+  ssmPathForMailgunSigningKey: /${self:custom.stage}/mailgun/signing-key
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: us-east-1
+  environment:
+    TABLE_NAME: ${self:custom.tableName}
+    AWS_DEPLOYMENT_REGION: ${self:provider.region}
+    SNS_PARAMETER_PATH: ${self:custom.ssmPathForSnsArn}
+    MAILGUN_SIGNING_PARAMETER_PATH: ${self:custom.ssmPathForMailgunSigningKey}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+      # Restrict our IAM role permissions to
+      # the specific table for the stage
+      Resource:
+        - "Fn::GetAtt": [MailgunTable, Arn]
+    - Effect: Allow
+      Action:
+        - SNS:Publish
+      # Restrict our IAM role permissions to
+      # the publish on specific Topic for the stage
+      Resource:
+        {
+          "Fn::Join":
+            [
+              "",
+              [
+                "arn:aws:sns:${self:provider.region}:",
+                { "Ref": "AWS::AccountId" },
+                ":${self:custom.snsTopicName}",
+              ],
+            ],
+        }
+    - Effect: Allow
+      Action:
+        - SSM:GetParameter
+      # Restrict our IAM role permissions to
+      # access the ssm parameter
+      Resource:
+        - {
+            "Fn::Join":
+              [
+                "",
+                [
+                  "arn:aws:ssm:${self:provider.region}:",
+                  { "Ref": "AWS::AccountId" },
+                  ":parameter${self:custom.ssmPathForSnsArn}",
+                ],
+              ],
+          }
+        - {
+            "Fn::Join":
+              [
+                "",
+                [
+                  "arn:aws:ssm:${self:provider.region}:",
+                  { "Ref": "AWS::AccountId" },
+                  ":parameter${self:custom.ssmPathForMailgunSigningKey}",
+                ],
+              ],
+          }
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+package:
+  exclude:
+    - config/.env.stg
+    - config/.env.pro
+  include:
+    - config/.env.dev
+
+functions:
+  processMailGunHook:
+    handler: app/handler.processMailGunHook
+    events:
+      - http:
+          path: mail-gun/
+          method: post
+resources:
+  # DynamoDB
+  - ${file(resources/dynamodb-table.yml)}
+  # SNS topic
+  - ${file(resources/sns-topic.yml)}
+  # Setting arn to ssm-parameter
+  - ${file(resources/ssm-parameters.yml)}
