@@ -7,11 +7,11 @@ phases:
     commands:
       - npm install -g serverless
       - npm install
-    build:
-      commands:
-        - echo Entered the build phase...
-        - serverless deploy
-        - echo deployment completed
+  build:
+    commands:
+      - echo Entered the build phase...
+      - serverless deploy ${STAGE_NAME}
+      - echo deployment completed
 cache:
   paths:
     - node_modules
