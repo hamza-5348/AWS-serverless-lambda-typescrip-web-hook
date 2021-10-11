@@ -22,6 +22,7 @@ saves the raw event in dynamodb.
 ## How to run?
 
 - npm install -g serverless
+- npm install
 - serverless deploy -s <stage>
 
 ## Run unit test?
