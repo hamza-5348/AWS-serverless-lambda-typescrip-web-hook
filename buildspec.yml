@@ -10,7 +10,7 @@ phases:
   build:
     commands:
       - echo Entered the build phase...
-      - serverless deploy ${STAGE_NAME}
+      - serverless deploy -s ${STAGE_NAME}
       - echo deployment completed
 cache:
   paths:
